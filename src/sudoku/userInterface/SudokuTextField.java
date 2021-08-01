@@ -1,6 +1,6 @@
 package sudoku.userInterface;
 
-import java.awt.*;
+import javafx.scene.control.TextField;
 
 /**
  * Created by Nikita on 25.07.2021 at 23:33

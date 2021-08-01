@@ -18,9 +18,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import sudoku.problemdomain.Coordinates;
-
-import java.awt.*;
 import java.util.HashMap;
 
 /**
@@ -37,7 +34,7 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
     //appropriate TextField therein. This means we don't need to hold a reference variable for every god damn
     //text field in this app; which would be awful.
     //The Key (<Key, Value> -> <Coordinates, Integer>) will be the HashCode of a given InputField for ease of lookup
-    private HashMap<Coordinates, SudokuTextField> textFieldCoordinates;
+    private final HashMap<Coordinates, SudokuTextField> textFieldCoordinates;
 
     private IUserInterfaceContract.EventListener listener;
 
@@ -60,7 +57,6 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
      * SudokuTextField object (all 81 of them), I instead store these references within a HashMap, and I retrieve
      * them by using their X and Y Coordinates as a "key" (a unique value used to look something up).
      *
-     * @param stage
      */
     public UserInterfaceImpl(Stage stage) {
         this.stage = stage;
@@ -89,7 +85,6 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
      * 2. As each TextField is drawn, add it's coordinates (x, y) based on it's Hash Value to
      * to the HashMap.
      *
-     * @param root
      */
     private void drawTextFields(Group root) {
         //where to start drawing the numbers
@@ -123,9 +118,6 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
 
     /**
      * Helper method for styling a sudoku tile number
-     * @param tile
-     * @param x
-     * @param y
      */
     private void styleSudokuTile(SudokuTextField tile, double x, double y) {
         Font numberFont = new Font(32);
@@ -145,7 +137,6 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
      * In order to draw the various lines that make up the Sudoku grid, we use a starting x and y offset
      * value (remember, x grows positively from left to right, and y grows positively from top to bottom).
      * Each square is meant to be 64x64 units, so we add that number each time a
-     * @param root
      */
     private void drawGridLines(Group root) {
         //draw vertical lines starting at 114x and 114y:
@@ -204,7 +195,6 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
 
     /**
      * Background of the primary window
-     * @param root
      */
     private void drawBackground(Group root) {
         Scene scene = new Scene(root, WINDOW_X, WINDOW_Y);
@@ -214,7 +204,6 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
 
     /**
      * Background of the actual sudoku board, offset from the window by BOARD_PADDING
-     * @param root
      */
     private void drawSudokuBoard(Group root) {
         Rectangle boardBackground = new Rectangle();
@@ -259,6 +248,7 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
                 );
 
                 if (value.equals("0")) value = "";
+
                 tile.setText(
                         value
                 );
@@ -296,16 +286,8 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
     @Override
     public void handle(KeyEvent event) {
         if (event.getEventType() == KeyEvent.KEY_PRESSED) {
-            if (event.getText().equals("0")
-                    || event.getText().equals("1")
-                    || event.getText().equals("2")
-                    || event.getText().equals("3")
-                    || event.getText().equals("4")
-                    || event.getText().equals("5")
-                    || event.getText().equals("6")
-                    || event.getText().equals("7")
-                    || event.getText().equals("8")
-                    || event.getText().equals("9")
+            if (
+                    event.getText().matches("[0-9]")
             ) {
                 int value = Integer.parseInt(event.getText());
                 handleInput(value, event.getSource());

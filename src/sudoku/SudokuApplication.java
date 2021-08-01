@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sudoku.buildlogic.SudokuBuildLogic;
+import sudoku.userInterface.IUserInterfaceContract;
+import sudoku.userInterface.UserInterfaceImpl;
 
 import java.io.IOException;
 
@@ -12,10 +15,11 @@ import java.io.IOException;
  * Created by Nikita on 25.07.2021 at 22:50
  */
 public class SudokuApplication extends Application{
-    private  IUserInterfaceContract.View uiImpl;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        uiImpl = new UserInterfaceImple(primaryStage);
+        IUserInterfaceContract.View uiImpl = new UserInterfaceImpl(primaryStage);
+
         try {
             SudokuBuildLogic.build(uiImpl);
         } catch (IOException e){
